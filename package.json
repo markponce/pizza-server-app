@@ -16,6 +16,6 @@
     "fastify": "5.10.0",
     "pino-pretty": "11.2.2",
     "promised-sqlite3": "2.1.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^6.0.1"
   }
 }
