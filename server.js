@@ -11,13 +11,13 @@ const server = fastify({
   },
 });
 
-// const PORT = process.env.PORT || 3000;
-// const HOST = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
+const PORT = process.env.PORT || 3000;
+const HOST = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const db = await AsyncDatabase.open("./pizza.sqlite");
+let db;
 
 server.addHook('preHandler', (req, res, done) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -32,7 +32,7 @@ server.addHook('preHandler', (req, res, done) => {
 })
 
 server.get("/", async function (req, reply) {
-  reply.send({ hello: "world" });
+      reply.send({ hello: "world" });
 });
 
 server.get("/api/pizzas", async function getPizzas(req, res) {
@@ -310,8 +310,9 @@ server.post("/api/contact", async function contactForm(req, res) {
 
 const start = async () => {
   try {
-    await server.listen({  port: 3000 });
-    console.log(`Server listening on port 3000}`);
+    db = await AsyncDatabase.open("./pizza.sqlite");
+    await server.listen({ host: HOST, port: PORT });
+    console.log(`Server listening on port ${PORT}`);
   } catch (err) {
     console.error(err);
     process.exit(1);
